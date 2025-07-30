@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    <title>Prefeitura de Guarulhos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="imagens/icon_gru.png">
+    <style>
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .chatbot-button {
+            background-color: #0056b3;
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .chatbot-button:hover {
+            transform: scale(1.1);
+        }
+        
+        .chatbot-window {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .chatbot-header {
+            background-color: #0056b3;
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chatbot-messages {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        
+        .chatbot-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #eee;
+        }
+        
+        .chatbot-input input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+        }
+        
+        .chatbot-input button {
+            margin-left: 10px;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 0 15px;
+            cursor: pointer;
+        }
+        
+        .message {
+            margin-bottom: 10px;
+            max-width: 80%;
+            padding: 8px 12px;
+            border-radius: 15px;
+        }
+        
+        .user-message {
+            background-color: #e3f2fd;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .bot-message {
+            background-color: #f1f1f1;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .chatbot-window {
+                width: 300px;
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-100">
+
+    <!-- Top Bar -->
+    <div class="bg-blue-900 text-white py-2 px-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <span class="text-sm"><i class="fas fa-phone mr-1"></i> (11) 2475-8600</span>
+                <span class="text-sm"><i class="fas fa-envelope mr-1"></i>atendimentofacil@guarulhos.sp.gov.br</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center mb-4 md:mb-0">
+                <img src="imagens/logo_gru.png" alt="Prefeitura de Guarulhos" class="h-16">
+                <div class="ml-4">
+                    <h1 class="text-2xl font-bold text-blue-900">Prefeitura de Guarulhos</h1>
+                    <p class="text-sm text-gray-600">Cidade que mais cresce no Brasil</p>
+                </div>
+            </div>
+            <div class="relative w-full md:w-auto">
+                <input type="text" placeholder="Buscar no site..." class="w-full md:w-64 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button class="absolute right-0 top-0 h-full px-4 text-gray-500 hover:text-blue-700">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-blue-800 text-white">
+        <div class="container mx-auto px-4">
+            <ul class="flex flex-wrap items-center justify-between">
+                <li class="py-3 px-4 hover:bg-blue-700 cursor-pointer"><i class="fas fa-home mr-2"><a href="https://www.guarulhos.sp.gov.br/"></i>Prefeitura Site Oficial</li></a>
+                <li class="py-3 px-4 hover:bg-blue-700 cursor-pointer"> <a href="https://www.guarulhos.sp.gov.br/cidade">Cidade</li></a>
+                <li class="py-3 px-4 hover:bg-blue-700 cursor-pointer"> <a href="https://www.guarulhos.sp.gov.br/cartadeservicos">Carta de Serviços</li></a> 
+                <li class="py-3 px-4 hover:bg-blue-700 cursor-pointer"> <a href="https://www.guarulhos.sp.gov.br/legislacao-municipal"> Legislação</li></a>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Hero Section -->
+        <div class="bg-blue-600 text-white rounded-lg p-8 mb-8 relative overflow-hidden">
+            <div class="relative z-10">
+                <h2 class="text-3xl font-bold mb-4">Bem-vindo à Guarulhos</h2>
+                <p class="mb-6">A cidade que mais cresce no Brasil, oferecendo qualidade de vida e oportunidades para todos.</p>
+            </div>
+            <div class="absolute right-0 bottom-0 opacity-20">
+                <img src="https://www.guarulhos.sp.gov.br/sites/default/files/guarulhos-skyline.png" alt="Guarulhos" class="h-64">
+            </div>
+        </div>
+
+        <!-- Chatbot Section -->
+        <div class="mb-12 bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-bold text-blue-900 mb-6 border-b pb-2">Atendimento Virtual</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Chatbot da Prefeitura</h3>
+                    <p class="text-gray-600 mb-4">Nosso assistente virtual está disponível 24 horas para tirar dúvidas sobre serviços públicos, agendamentos e informações da cidade.</p>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 p-3 rounded-full mr-3">
+                                <i class="fas fa-check-circle text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Tire dúvidas rápidas</h4>
+                                <p class="text-gray-600 text-sm">Sobre documentos, horários e serviços</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 p-3 rounded-full mr-3">
+                                <i class="fas fa-clock text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Disponível 24/7</h4>
+                                <p class="text-gray-600 text-sm">Atendimento a qualquer hora do dia</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 p-3 rounded-full mr-3">
+                                <i class="fas fa-map-marker-alt text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Informações locais</h4>
+                                <p class="text-gray-600 text-sm">Endereços e horários de unidades públicas</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-6 flex flex-col items-center justify-center">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" alt="Chatbot" class="h-40 mb-6">
+                    <button id="open-chatbot" class="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-700 transition flex items-center">
+                        <i class="fas fa-comment-dots mr-2"></i> Fale com nosso chatbot
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white pt-12 pb-6">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Institucional</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:underline">A Prefeitura</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Serviços</h3>
+                    <ul class="space-y-2">
+                        <li><a href="https://www.guarulhos.sp.gov.br/ouvidoria-do-municipio" class="hover:underline">Ouvidoria do Município</a></li>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Transparência</h3>
+                    <ul class="space-y-2">
+                        <li><a href="https://www.guarulhos.sp.gov.br/transparencia" class="hover:underline">Portal da Transparência</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contato</h3>
+                    <ul class="space-y-2"></ul>
+                        <li><i class="fas fa-map-marker-alt mr-2"></i> Av. Bom Clima, 91 - Bom Clima - Guarulhos - CEP: 07196-220</li>
+                        <li><i class="fas fa-envelope mr-2"></i>atendimentofacil@guarulhos.sp.gov.br</li>
+                        <li><i class="fas fa-clock mr-2"></i> Seg-Sex: 8h às 17h</li>
+                    </ul>
+                    <div class="mt-4 flex space-x-4">
+                        <a href="https://www.facebook.com/PrefeituraGuarulhosOficial" class="text-white hover:text-blue-300"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/prefeituraguarulhosoficial/" class="text-white hover:text-blue-300"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.tiktok.com/prefguarulhos" class="text-white hover:text-blue-300"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-6 text-center text-sm text-gray-400">
+                <p>© 2025 Prefeitura Municipal de Guarulhos - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot Widget -->
+    <div class="chatbot-container">
+        <div class="chatbot-window" id="chatbot-window">
+            <div class="chatbot-header">
+                <span>Atendimento Virtual</span>
+                <button id="close-chatbot" class="text-white"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="chatbot-messages" id="chatbot-messages">
+                <div class="message bot-message">
+                    Olá! Sou o assistente virtual da Prefeitura de Guarulhos. Como posso te ajudar hoje?
+                </div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatbot-input" placeholder="Digite sua mensagem...">
+                <button id="send-message"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <div class="chatbot-button" id="chatbot-button">
+            <i class="fas fa-comment-dots text-2xl"></i>
+        </div>
+    </div>
+
+    <script>
+        // Chatbot functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatbotButton = document.getElementById('chatbot-button');
+            const chatbotWindow = document.getElementById('chatbot-window');
+            const openChatbotBtn = document.getElementById('open-chatbot');
+            const closeChatbot = document.getElementById('close-chatbot');
+            const sendMessageBtn = document.getElementById('send-message');
+            const chatbotInput = document.getElementById('chatbot-input');
+            const chatbotMessages = document.getElementById('chatbot-messages');
+            
+            // Toggle chatbot window
+            chatbotButton.addEventListener('click', function() {
+                chatbotWindow.style.display = chatbotWindow.style.display === 'flex' ? 'none' : 'flex';
+            });
+            
+            // Open chatbot from main button
+            openChatbotBtn.addEventListener('click', function() {
+                chatbotWindow.style.display = 'flex';
+            });
+            
+            // Close chatbot
+            closeChatbot.addEventListener('click', function() {
+                chatbotWindow.style.display = 'none';
+            });
+            
+            // Send message
+            function sendMessage() {
+                const message = chatbotInput.value.trim();
+                if (message) {
+                    // Add user message
+                    const userMessage = document.createElement('div');
+                    userMessage.className = 'message user-message';
+                    userMessage.textContent = message;
+                    chatbotMessages.appendChild(userMessage);
+                    
+                    // Clear input
+                    chatbotInput.value = '';
+                    
+                    // Scroll to bottom
+                    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                    
+                    // Simulate bot response after a delay
+                    setTimeout(() => {
+                        const botResponses = [
+                            "Entendi sua dúvida. Vou verificar as informações para você.",
+                            "Para esse tipo de solicitação, você pode acessar nosso portal de serviços online.",
+                            "Posso te ajudar com informações sobre documentos, saúde, educação e outros serviços municipais.",
+                            "No site da prefeitura, na seção 'Serviços', você encontra mais detalhes sobre esse assunto.",
+                            "Caso precise de atendimento presencial, recomendo visitar uma de nossas unidades."
+                        ];
+                        
+                        const randomResponse = botResponses[Math.floor(Math.random() * botResponses.length)];
+                        
+                        const botMessage = document.createElement('div');
+                        botMessage.className = 'message bot-message';
+                        botMessage.textContent = randomResponse;
+                        chatbotMessages.appendChild(botMessage);
+                        
+                        // Scroll to bottom
+                        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                    }, 1000);
+                }
+            }
+            
+            // Send message on button click
+            sendMessageBtn.addEventListener('click', sendMessage);
+            
+            // Send message on Enter key
+            chatbotInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
