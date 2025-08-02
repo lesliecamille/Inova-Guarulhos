@@ -281,6 +281,16 @@
     </div>
 
     <script>
+
+        // ChatBot funcional
+        <script SameSite="None; Secure"  type="module" src="https://cdn.landbot.io/landbot-3/landbot-3.0.0.mjs">
+        </script>
+
+        <script type="module">
+          var myLandbot = new Landbot.Fullpage({
+          configUrl: 'https://storage.googleapis.com/landbot.online/v3/H-3066214-2M12MPIYMHYGUDKH/index.json',
+        });
+        
         // Chatbot functionality
         document.addEventListener('DOMContentLoaded', function() {
             const chatbotButton = document.getElementById('chatbot-button');
@@ -358,4 +368,5 @@
     </script>
 </body>
 </html>
+
 
