@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="shortcut icon" href="src/imagens/icon_gru.png">
     <style>
-        .chatbot-container {
+    .chatbot-container {
             position: fixed;
             bottom: 20px;
             right: 20px;
@@ -86,7 +86,6 @@
             padding: 0 15px;
             cursor: pointer;
         }
-        
         .message {
             margin-bottom: 10px;
             max-width: 80%;
@@ -211,7 +210,7 @@
                     <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" alt="Chatbot" class="h-40 mb-6">
                     <button id="open-chatbot" class="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-700 transition flex items-center">
                         <i class="fas fa-comment-dots mr-2"></i> Fale com nosso chatbot
-                    </button>
+                    </button>                            
                 </div>
             </div>
         </div>
@@ -258,117 +257,40 @@
         </div>
     </footer>
 
-    <!-- Chatbot Widget -->
-    <div class="chatbot-container">
-        <div class="chatbot-window" id="chatbot-window">
-            <div class="chatbot-header">
-                <span>Atendimento Virtual</span>
-                <button id="close-chatbot" class="text-white"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="chatbot-messages" id="chatbot-messages">
-                <div class="message bot-message">
-                    Olá! Sou o assistente virtual da Prefeitura de Guarulhos. Como posso te ajudar hoje?
-                </div>
-            </div>
-            <div class="chatbot-input">
-                <input type="text" id="chatbot-input" placeholder="Digite sua mensagem...">
-                <button id="send-message"><i class="fas fa-paper-plane"></i></button>
-            </div>
-        </div>
-        <div class="chatbot-button" id="chatbot-button">
-            <i class="fas fa-comment-dots text-2xl"></i>
-        </div>
-    </div>
+   <!-- Landbot Script -->
+<script type="module">
+  let myLandbot; // variável global
 
-    <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const openChatbotBtn = document.getElementById("open-chatbot");
 
-        // ChatBot funcional
-        <script SameSite="None; Secure"  type="module" src="https://cdn.landbot.io/landbot-3/landbot-3.0.0.mjs">
-        </script>
-
-        <script type="module">
-          var myLandbot = new Landbot.Fullpage({
+    openChatbotBtn.addEventListener("click", function () {
+      if (!myLandbot) {
+        myLandbot = new Landbot.Fullpage({
           configUrl: 'https://storage.googleapis.com/landbot.online/v3/H-3066214-2M12MPIYMHYGUDKH/index.json',
         });
-        
-        // Chatbot functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const chatbotButton = document.getElementById('chatbot-button');
-            const chatbotWindow = document.getElementById('chatbot-window');
-            const openChatbotBtn = document.getElementById('open-chatbot');
-            const closeChatbot = document.getElementById('close-chatbot');
-            const sendMessageBtn = document.getElementById('send-message');
-            const chatbotInput = document.getElementById('chatbot-input');
-            const chatbotMessages = document.getElementById('chatbot-messages');
-            
-            // Toggle chatbot window
-            chatbotButton.addEventListener('click', function() {
-                chatbotWindow.style.display = chatbotWindow.style.display === 'flex' ? 'none' : 'flex';
-            });
-            
-            // Open chatbot from main button
-            openChatbotBtn.addEventListener('click', function() {
-                chatbotWindow.style.display = 'flex';
-            });
-            
-            // Close chatbot
-            closeChatbot.addEventListener('click', function() {
-                chatbotWindow.style.display = 'none';
-            });
-            
-            // Send message
-            function sendMessage() {
-                const message = chatbotInput.value.trim();
-                if (message) {
-                    // Add user message
-                    const userMessage = document.createElement('div');
-                    userMessage.className = 'message user-message';
-                    userMessage.textContent = message;
-                    chatbotMessages.appendChild(userMessage);
-                    
-                    // Clear input
-                    chatbotInput.value = '';
-                    
-                    // Scroll to bottom
-                    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-                    
-                    // Simulate bot response after a delay
-                    setTimeout(() => {
-                        const botResponses = [
-                            "Entendi sua dúvida. Vou verificar as informações para você.",
-                            "Para esse tipo de solicitação, você pode acessar nosso portal de serviços online.",
-                            "Posso te ajudar com informações sobre documentos, saúde, educação e outros serviços municipais.",
-                            "No site da prefeitura, na seção 'Serviços', você encontra mais detalhes sobre esse assunto.",
-                            "Caso precise de atendimento presencial, recomendo visitar uma de nossas unidades."
-                        ];
-                        
-                        const randomResponse = botResponses[Math.floor(Math.random() * botResponses.length)];
-                        
-                        const botMessage = document.createElement('div');
-                        botMessage.className = 'message bot-message';
-                        botMessage.textContent = randomResponse;
-                        chatbotMessages.appendChild(botMessage);
-                        
-                        // Scroll to bottom
-                        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-                    }, 1000);
-                }
-            }
-            
-            // Send message on button click
-            sendMessageBtn.addEventListener('click', sendMessage);
-            
-            // Send message on Enter key
-            chatbotInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    sendMessage();
-                }
-            });
+      } else {
+        myLandbot.open(); // reabre se já estiver carregado
+      }
+    });
+  });
+</script>
+
+<!-- Landbot Embed Script -->
+<script>
+         window.__landbot = window.__landbot || [];
+            (function () {
+                var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
+                s.addEventListener('load', function () {
+                  // Carregado com sucesso
         });
-    </script>
+        s.src = 'https://static.landbot.io/landbot-3/landbot-3.0.0.js';
+        var x = document.getElementsByTagName('script')[0];
+        x.parentNode.insertBefore(s, x);
+        })();
+</script>
 </body>
 </html>
-
 
 
 
